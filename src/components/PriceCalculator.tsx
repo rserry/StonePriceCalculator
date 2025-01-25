@@ -59,23 +59,27 @@ const PriceCalculator = () => {
                     <div key={index} className="mb-6 p-4 bg-white rounded shadow-md relative">
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-gray-700 mb-2" htmlFor={`width-${index}`}>Width</label>
+                                <label className="block text-gray-700 mb-2" htmlFor={`width-${index}`}>Width (cm)</label>
                                 <input
                                     type="number"
                                     id={`width-${index}`}
                                     value={rectangle.width}
                                     onChange={(e) => handleRectangleChange(index, 'width', e.target.value)}
                                     className="w-full px-3 py-2 border rounded"
+                                    step="0.1"
+                                    min="0"
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-700 mb-2" htmlFor={`height-${index}`}>Height</label>
+                                <label className="block text-gray-700 mb-2" htmlFor={`height-${index}`}>Height (cm)</label>
                                 <input
                                     type="number"
                                     id={`height-${index}`}
                                     value={rectangle.height}
                                     onChange={(e) => handleRectangleChange(index, 'height', e.target.value)}
                                     className="w-full px-3 py-2 border rounded"
+                                    step="0.1"
+                                    min="0"
                                 />
                             </div>
                         </div>

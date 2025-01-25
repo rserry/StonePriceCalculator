@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { PlusIcon } from '@heroicons/react/24/solid';
+import { PlusIcon, TrashIcon } from '@heroicons/react/24/solid';
 import type { Rectangle } from '@/types';
 
 const PriceCalculator = () => {
@@ -18,6 +18,11 @@ const PriceCalculator = () => {
 
     const handleAddRectangle = () => {
         setRectangles([...rectangles, { width: 0, height: 0 }]);
+    };
+
+    const handleRemoveRectangle = (index: number) => {
+        const newRectangles = rectangles.filter((_, i) => i !== index);
+        setRectangles(newRectangles);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -51,7 +56,7 @@ const PriceCalculator = () => {
             <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md w-full max-w-md">
                 <h2 className="text-2xl font-bold mb-6 text-center">Price Calculator</h2>
                 {rectangles.map((rectangle, index) => (
-                    <div key={index} className="mb-6 p-4 bg-white rounded shadow-md">
+                    <div key={index} className="mb-6 p-4 bg-white rounded shadow-md relative">
                         <div className="grid grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-gray-700 mb-2" htmlFor={`width-${index}`}>Width</label>
@@ -74,6 +79,13 @@ const PriceCalculator = () => {
                                 />
                             </div>
                         </div>
+                        <button
+                            type="button"
+                            onClick={() => handleRemoveRectangle(index)}
+                            className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                        >
+                            <TrashIcon className="h-5 w-5" />
+                        </button>
                     </div>
                 ))}
                 <button type="button" onClick={handleAddRectangle} className="w-full bg-gray-500 text-white py-2 rounded hover:bg-gray-600 mb-4 flex items-center justify-center">

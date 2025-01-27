@@ -1,23 +1,28 @@
 'use client';
 
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/solid';
-import type { Rectangle } from '@/types';
+import { Rectangle } from '@/entities/Rectangle';
+
+const SlabPlotter = dynamic(() => import('./SlabPlotter'), { ssr: false });
 
 const PriceCalculator = () => {
-    const [rectangles, setRectangles] = useState<Rectangle[]>([{ width: 0, height: 0 }]);
+    const [rectangles, setRectangles] = useState<Rectangle[]>([new Rectangle(0, 0)]);
+    const [totalPrice, setTotalPrice] = useState<number>();
     const [prices, setPrices] = useState<number[]>([]);
-    const [totalPrice, setTotalPrice] = useState(null);
+    const [slabsNeeded, setSlabsNeeded] = useState<number>();
+    const [leftoverArea, setLeftoverArea] = useState<number>();
     const [error, setError] = useState('');
 
-    const handleRectangleChange = (index: number, field: keyof Rectangle, value: string) => {
+    const handleRectangleChange = (index: number, field: 'width' | 'height', value: string) => {
         const newRectangles = [...rectangles];
         newRectangles[index][field] = Number(value);
         setRectangles(newRectangles);
     };
 
     const handleAddRectangle = () => {
-        setRectangles([...rectangles, { width: 0, height: 0 }]);
+        setRectangles([...rectangles, new Rectangle(0, 0)]);
     };
 
     const handleRemoveRectangle = (index: number) => {
@@ -31,7 +36,7 @@ const PriceCalculator = () => {
         setPrices([]);
 
         try {
-            const responses = await fetch('/api/calculate-price', {
+            const response = await fetch('/api/calculate-price', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -39,9 +44,15 @@ const PriceCalculator = () => {
                 body: JSON.stringify(rectangles),
             });
 
-            const data = await responses.json();
-            setPrices(data.prices);
-            setTotalPrice(data.totalPrice);
+            if (!response.ok) {
+                throw new Error('Failed to calculate price');
+            }
+
+            const { totalPrice, prices, slabsNeeded, leftoverArea } = await response.json();
+            setTotalPrice(totalPrice);
+            setPrices(prices);
+            setSlabsNeeded(slabsNeeded);
+            setLeftoverArea(leftoverArea);
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message);
@@ -100,10 +111,15 @@ const PriceCalculator = () => {
                     <p key={index} className="text-green-500 mb-4">Price for rectangle {index + 1}: €{price}</p>
                 ))}
                 {totalPrice != null && <p className="text-blue-500 mb-4">Total price: €{totalPrice}</p>}
+                {slabsNeeded != null && <p className="text-blue-500 mb-4">Slabs needed: {slabsNeeded}</p>}
+                {leftoverArea != null && <p className="text-blue-500 mb-4">Leftover area: {leftoverArea}</p>}
                 <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
                     Calculate
                 </button>
             </form>
+            <div>
+                {slabsNeeded != null && rectangles.length > 0 && slabsNeeded > 0 && <SlabPlotter slabsNeeded={slabsNeeded} rectangles={rectangles} />}
+            </div>
         </div>
     );
 };

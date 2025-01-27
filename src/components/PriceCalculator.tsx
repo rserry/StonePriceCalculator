@@ -9,6 +9,7 @@ const SlabPlotter = dynamic(() => import('./SlabPlotter'), { ssr: false });
 
 const PriceCalculator = () => {
     const [rectangles, setRectangles] = useState<Rectangle[]>([new Rectangle(0, 0)]);
+    const [placedRectangles, setPlacedRectangles] = useState<Rectangle[]>([]);
     const [totalPrice, setTotalPrice] = useState<number>();
     const [prices, setPrices] = useState<number[]>([]);
     const [slabsNeeded, setSlabsNeeded] = useState<number>();
@@ -48,11 +49,11 @@ const PriceCalculator = () => {
                 throw new Error('Failed to calculate price');
             }
 
-            const { totalPrice, prices, slabsNeeded, rectangles: updatedRects, leftoverArea } = await response.json();
+            const { totalPrice, prices, slabsNeeded, rectangles: placedRectangles, leftoverArea } = await response.json();
             setTotalPrice(totalPrice);
             setPrices(prices);
             setSlabsNeeded(slabsNeeded);
-            setRectangles(updatedRects);
+            setPlacedRectangles(placedRectangles);
             setLeftoverArea(leftoverArea);
         } catch (err) {
             if (err instanceof Error) {
@@ -119,7 +120,7 @@ const PriceCalculator = () => {
                 </button>
             </form>
             <div>
-                {slabsNeeded != null && rectangles.length > 0 && slabsNeeded > 0 && <SlabPlotter slabsNeeded={slabsNeeded} rectangles={rectangles} />}
+                {slabsNeeded != null && placedRectangles.length > 0 && slabsNeeded > 0 && <SlabPlotter slabsNeeded={slabsNeeded} rectangles={placedRectangles} />}
             </div>
         </div>
     );

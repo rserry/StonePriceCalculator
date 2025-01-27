@@ -31,7 +31,20 @@ export class Rectangle {
         this.bottomLeft = point;
     }
 
+    rotate() {
+        const temp = this.width;
+        this.width = this.height;
+        this.height = temp;
+    }
+
     area(): number {
         return this.width * this.height;
+    }
+
+    intersects(rectangle: Rectangle): boolean {
+        return this.bottomLeft.x < rectangle.bottomLeft.x + rectangle.width &&
+            this.bottomLeft.x + this.width > rectangle.bottomLeft.x &&
+            this.bottomLeft.y < rectangle.bottomLeft.y + rectangle.height &&
+            this.bottomLeft.y + this.height > rectangle.bottomLeft.y;
     }
 }

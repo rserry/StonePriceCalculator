@@ -38,13 +38,17 @@ import { Rectangle } from '@/entities/Rectangle';
  *                   type: number
  *                   description: The number of slabs needed
  *                   example: 3
+ *                 rectangles:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Rectangle'
  *                 leftoverArea:
  *                   type: number
  *                   description: The leftover area of the slabs
  *                   example: 100.60     
  */
 export async function POST(request: NextRequest) {
-    const rectangles: Rectangle[] = await request.json();
-    const { totalPrice, prices, slabsNeeded, leftoverArea } = calculatePrice(rectangles);
-    return NextResponse.json({ totalPrice, prices, slabsNeeded, leftoverArea });
+    const rects: Rectangle[] = (await request.json()).map((rect: { width: number, height: number }) => new Rectangle(rect.width, rect.height));
+    const { totalPrice, prices, slabsNeeded, rectangles, leftoverArea } = calculatePrice(rects);
+    return NextResponse.json({ totalPrice, prices, slabsNeeded, rectangles, leftoverArea });
 }

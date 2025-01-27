@@ -30,8 +30,8 @@ export class Rectangle {
     setBottomLeft(point: Point) {
         this.bottomLeft = point;
     }
-}
 
-export function getArea(rectangle: Rectangle): number {
-    return rectangle.width * rectangle.height;
+    area(): number {
+        return this.width * this.height;
+    }
 }

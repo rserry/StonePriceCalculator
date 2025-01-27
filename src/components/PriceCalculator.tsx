@@ -48,10 +48,11 @@ const PriceCalculator = () => {
                 throw new Error('Failed to calculate price');
             }
 
-            const { totalPrice, prices, slabsNeeded, leftoverArea } = await response.json();
+            const { totalPrice, prices, slabsNeeded, rectangles: updatedRects, leftoverArea } = await response.json();
             setTotalPrice(totalPrice);
             setPrices(prices);
             setSlabsNeeded(slabsNeeded);
+            setRectangles(updatedRects);
             setLeftoverArea(leftoverArea);
         } catch (err) {
             if (err instanceof Error) {

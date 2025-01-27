@@ -60,7 +60,12 @@ const SlabPlotter: React.FC<SlabPlotterProps> = ({ slabsNeeded, rectangles }) =>
     return (
         <Plot
             data={traces}
-            layout={{ title: 'Slab Plotter', showlegend: true }}
+            layout={{
+                title: 'Slab Plotter',
+                showlegend: true,
+                xaxis: { scaleanchor: 'y' },
+                yaxis: { scaleratio: 1 }
+            }}
         />
     );
 };

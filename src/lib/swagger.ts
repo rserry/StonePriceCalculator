@@ -11,7 +11,7 @@ export const getApiDocs = async () => {
             },
             security: [],
         },
-        apis: ["src/app/api/**/*.ts", "src/types.ts"], // Include both API route files and type definitions
+        apis: ["src/app/api/**/*.ts", "src/entities/**/*.ts"], // Include both API route files and type definitions
     });
     return spec;
 };

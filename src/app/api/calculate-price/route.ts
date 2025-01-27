@@ -1,12 +1,12 @@
-import type { Rectangle } from '@/types';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { calculatePrice } from '@/utils/priceCalculator';
-import { NextRequest, NextResponse } from 'next/server';
-
+import { Rectangle } from '@/entities/Rectangle';
 
 /**
  * @swagger
  * /api/calculate-price:
- *  post:
+ *   post:
  *     summary: Calculate the price of stone pieces
  *     requestBody:
  *       required: true
@@ -15,16 +15,7 @@ import { NextRequest, NextResponse } from 'next/server';
  *           schema:
  *             type: array
  *             items:
- *               type: object
- *               properties:
- *                 width:
- *                   type: float
- *                   description: The width of the piece.
- *                   example: 5.59
- *                 height:
- *                   type: float
- *                   description: The height of the piece.
- *                   example: 10.5
+ *               $ref: '#/components/schemas/Rectangle'
  *     responses:
  *       200:
  *         description: The price of the stone pieces
@@ -34,18 +25,26 @@ import { NextRequest, NextResponse } from 'next/server';
  *               type: object
  *               properties:
  *                 totalPrice:
- *                  type: number
- *                  description: The total price of all the stone pieces
- *                  example: 335.61
+ *                   type: number
+ *                   description: The total price of all the stone pieces
+ *                   example: 335.61
  *                 prices:
  *                   type: array
  *                   items:
  *                     type: number
  *                   description: The prices of the stone pieces    
  *                   example: [135.16, 200.45]
+ *                 slabsNeeded:
+ *                   type: number
+ *                   description: The number of slabs needed
+ *                   example: 3
+ *                 leftoverArea:
+ *                   type: number
+ *                   description: The leftover area of the slabs
+ *                   example: 100.60     
  */
 export async function POST(request: NextRequest) {
     const rectangles: Rectangle[] = await request.json();
-    const { totalPrice, prices } = calculatePrice(rectangles);
-    return NextResponse.json({ totalPrice, prices });
+    const { totalPrice, prices, slabsNeeded, leftoverArea } = calculatePrice(rectangles);
+    return NextResponse.json({ totalPrice, prices, slabsNeeded, leftoverArea });
 }

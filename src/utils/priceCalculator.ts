@@ -1,12 +1,13 @@
-import type { Rectangle } from "@/types";
+import { getArea, Rectangle } from "@/entities/Rectangle";
+import solve from "./2d-bin-packing-solver/solver";
 
-export function calculatePrice(rectangles: Rectangle[]): { totalPrice: number, prices: number[] } {
+export function calculatePrice(rects: Rectangle[]): { totalPrice: number, prices: number[], slabsNeeded: number, leftoverArea: number } {
     const costPerSquareMeter = 1;
-    const prices: number[] = [];
-    rectangles.forEach((rectangle) => {
-        const { width, height } = rectangle;
-        const pieceArea = width * height;
-        prices.push(parseFloat((pieceArea * costPerSquareMeter).toFixed(2)));
-    });
-    return { totalPrice: prices.reduce((acc, price) => acc + price, 0), prices };
+    const costPerSlab = 100;
+    const slabSize: Rectangle = new Rectangle(100, 200);
+
+    const { slabsNeeded, rectangles, leftoverArea } = solve(rects, slabSize.width, slabSize.height);
+    const prices = rectangles.map(rectangle => getArea(rectangle) * costPerSquareMeter);
+    const totalPrice = prices.reduce((acc, price) => acc + price, 0) + (slabsNeeded * costPerSlab);
+    return { totalPrice, prices, slabsNeeded, leftoverArea };
 }

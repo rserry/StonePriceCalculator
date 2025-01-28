@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "@vercel/analytics": "^1.4.1",
     "next": "^15.1",
     "next-swagger-doc": "0.4.0",
     "plotly.js": "^2.35.3",

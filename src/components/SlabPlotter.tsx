@@ -36,7 +36,7 @@ const SlabPlotter: React.FC<SlabPlotterProps> = ({ slabsNeeded, rectangles }) =>
             mode: 'lines',
             line: { color: 'black' },
             fillcolor: 'rgba(0, 0, 0, 0.1)',
-            name: `Slab ${i}`
+            name: `Slab ${i + 1}`
         });
     }
 
@@ -53,7 +53,7 @@ const SlabPlotter: React.FC<SlabPlotterProps> = ({ slabsNeeded, rectangles }) =>
             mode: 'lines',
             line: { color: 'blue' },
             fillcolor: 'rgba(0, 0, 255, 0.5)',
-            name: `Rectangle ${rectIndex}`
+            name: `Rectangle ${rectIndex + 1}`
         });
     });
 

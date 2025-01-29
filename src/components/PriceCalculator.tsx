@@ -12,7 +12,7 @@ const PriceCalculator = () => {
     const [placedRectangles, setPlacedRectangles] = useState<Rectangle[]>([]);
     const [totalPrice, setTotalPrice] = useState<number>();
     const [prices, setPrices] = useState<number[]>([]);
-    const [slabsNeeded, setSlabsNeeded] = useState<number>();
+    const [slabsNeeded, setSlabsNeeded] = useState<number>(0);
     const [leftoverArea, setLeftoverArea] = useState<number>();
     const [error, setError] = useState('');
 
@@ -46,7 +46,6 @@ const PriceCalculator = () => {
         setError('');
         setPrices([]);
         setTotalPrice(undefined);
-        setSlabsNeeded(undefined);
         setLeftoverArea(undefined);
 
         // Create duplicates of rectangles based on quantity
@@ -96,6 +95,9 @@ const PriceCalculator = () => {
                                     id={`width-${index}`}
                                     value={item.rectangle.width}
                                     onChange={(e) => handleRectangleChange(index, 'width', e.target.value)}
+                                    onBlur={(e) => {
+                                        e.target.value = e.target.value.replace(/^0+/, '');
+                                    }}
                                     className="w-full p-2 border border-gray-300 rounded"
                                     min="0"
                                 />
@@ -107,6 +109,9 @@ const PriceCalculator = () => {
                                     id={`height-${index}`}
                                     value={item.rectangle.height}
                                     onChange={(e) => handleRectangleChange(index, 'height', e.target.value)}
+                                    onBlur={(e) => {
+                                        e.target.value = e.target.value.replace(/^0+/, '');
+                                    }}
                                     className="w-full p-2 border border-gray-300 rounded"
                                     min="0"
                                 />
@@ -141,11 +146,11 @@ const PriceCalculator = () => {
                     <p key={index} className="text-green-500 mt-4">Price for rectangle {index + 1}: €{price}</p>
                 ))}
                 {totalPrice && <p className="mt-4">Total Price: €{totalPrice}</p>}
-                {slabsNeeded && <p className="mt-4">Slabs Needed: {slabsNeeded}</p>}
+                {slabsNeeded > 0 && <p className="mt-4">Slabs Needed: {slabsNeeded}</p>}
                 {leftoverArea && <p className="mt-4">Leftover Area: {leftoverArea} mm²</p>}
             </form>
             <div>
-                {slabsNeeded != null && placedRectangles.length > 0 && slabsNeeded > 0 && <SlabPlotter slabsNeeded={slabsNeeded} rectangles={placedRectangles} />}
+                {slabsNeeded != null && placedRectangles.length > 0 && <SlabPlotter slabsNeeded={slabsNeeded} rectangles={placedRectangles} />}
             </div>
         </div>
     );

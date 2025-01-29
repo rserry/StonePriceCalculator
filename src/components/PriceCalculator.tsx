@@ -41,6 +41,9 @@ const PriceCalculator = () => {
         e.preventDefault();
         setError('');
         setPrices([]);
+        setTotalPrice(undefined);
+        setSlabsNeeded(undefined);
+        setLeftoverArea(undefined);
 
         // Create duplicates of rectangles based on quantity
         const rectanglesToSend = rectangles.flatMap(item =>
@@ -132,9 +135,9 @@ const PriceCalculator = () => {
                 {prices.length > 0 && prices.map((price, index) => (
                     <p key={index} className="text-green-500 mt-4">Price for rectangle {index + 1}: €{price}</p>
                 ))}
-                {totalPrice && <p className="mt-4">Total Price: {totalPrice}</p>}
+                {totalPrice && <p className="mt-4">Total Price: €{totalPrice}</p>}
                 {slabsNeeded && <p className="mt-4">Slabs Needed: {slabsNeeded}</p>}
-                {leftoverArea && <p className="mt-4">Leftover Area: {leftoverArea}</p>}
+                {leftoverArea && <p className="mt-4">Leftover Area: {leftoverArea} mm²</p>}
             </form>
             <div>
                 {slabsNeeded != null && placedRectangles.length > 0 && slabsNeeded > 0 && <SlabPlotter slabsNeeded={slabsNeeded} rectangles={placedRectangles} />}

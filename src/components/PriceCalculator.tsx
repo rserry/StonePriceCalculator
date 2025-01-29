@@ -33,8 +33,12 @@ const PriceCalculator = () => {
     };
 
     const handleRemoveRectangle = (index: number) => {
-        const newRectangles = rectangles.filter((_, i) => i !== index);
-        setRectangles(newRectangles);
+        if (rectangles.length > 1) {
+            const newRectangles = rectangles.filter((_, i) => i !== index);
+            setRectangles(newRectangles);
+        } else {
+            setError('At least one rectangle must be present.');
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -119,12 +123,13 @@ const PriceCalculator = () => {
                                 />
                             </div>
                         </div>
-                        <button
-                            type="button"
-                            onClick={() => handleRemoveRectangle(index)}
-                            className="absolute top-2 right-2">
-                            <TrashIcon className="w-6 h-6 text-red-500" />
-                        </button>
+                        {rectangles.length > 1 &&
+                            <button
+                                type="button"
+                                onClick={() => handleRemoveRectangle(index)}
+                                className="absolute top-2 right-2">
+                                <TrashIcon className="w-6 h-6 text-red-500" />
+                            </button>}
                     </div>
                 ))}
                 <button type="button" onClick={handleAddRectangle} className="flex items-center justify-center w-full p-2 mb-4 bg-blue-500 text-white rounded">

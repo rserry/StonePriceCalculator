@@ -18,8 +18,8 @@ const SlabPlotter: React.FC<SlabPlotterProps> = ({ slabsNeeded, rectangles }) =>
         return null;
     }
 
-    const SLAB_WIDTH = 100;
-    const SLAB_HEIGHT = 200;
+    const SLAB_WIDTH = 1000;
+    const SLAB_HEIGHT = 2000;
 
     const traces: Data[] = [];
 

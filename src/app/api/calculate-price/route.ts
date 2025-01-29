@@ -15,7 +15,16 @@ import { Rectangle } from '@/entities/Rectangle';
  *           schema:
  *             type: array
  *             items:
- *               $ref: '#/components/schemas/Rectangle'
+ *               type: object
+ *               properties:
+ *                 width:
+ *                   type: number
+ *                   description: The width of the piece in mm
+ *                   example: 559
+ *                 height:
+ *                   type: number
+ *                   description: The height of the piece in mm
+ *                   example: 105
  *     responses:
  *       200:
  *         description: The price of the stone pieces
